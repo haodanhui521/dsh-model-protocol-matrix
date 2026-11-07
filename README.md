@@ -122,7 +122,10 @@ patch 里只留静态设置（`enabled`、`probe.timeoutMs` 等）。
 
 ```sh
 node scripts/harness.mjs      # 纯函数 + mock configEditor 的集成测试（31 项）
+node scripts/client-check.mjs # client 半装配检查（module loader / slots / locale）
+node scripts/probe-check.mjs # 探测层验证（本地三协议 mock 网关，13 项）
 node --check lib/*.js         # 语法检查
+npm pack --dry-run            # 打包内容自检
 ```
 
 模块：

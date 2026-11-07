@@ -1,0 +1,15 @@
+# 提交到 awesome-dsh-plugin 的条目文件
+# 路径：data/plugins/<owner>__dsh-model-protocol-matrix.yml
+#
+# 规则（contributing.md）：
+#  - description.en 必填；含 ": " 时必须加引号
+#  - url 必须与仓库完全一致
+#  - category 取值见 contributing.md，本插件用 model
+#  - 仓库需声明 dsh.bundle（本包已声明），且创建满 1 天
+url: https://github.com/huayuanheshang/dsh-model-protocol-matrix
+name: huayuanheshang/dsh-model-protocol-matrix
+category: model
+description:
+  en: 'Per-model wire protocol for DeepSeek Harness: compile model-level protocol intent into legal llm-pi-ai routes, probe all three protocols with a control probe, and hide models no protocol can serve. Mutually exclusive with dsh-gearbox.'
+  zh: '让 DSH 的每个模型单独选择请求协议：把模型级协议意图编译成合法的 llm-pi-ai 路由，用对照探针实测三种协议，并把任何协议都不可用的模型从选择器隐藏。与 dsh-gearbox 二选一。'
+icon: https://raw.githubusercontent.com/huayuanheshang/dsh-model-protocol-matrix/main/assets/icon-180.png
