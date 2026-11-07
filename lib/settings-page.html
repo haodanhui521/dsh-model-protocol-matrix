@@ -1,0 +1,139 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>模型协议矩阵</title><style>:root{--pm-bg:#ffffff;--pm-fg:#1b1b1f;--pm-muted:#77777f;--pm-line:#e3e3e9;--pm-btn:#f2f2f7;--pm-btn-fg:#1b1b1f;--pm-primary:#2f6feb;--pm-primary-fg:#ffffff;--pm-ok-bg:#e6f4ea;--pm-ok-fg:#1a7f37;--pm-ok-line:#bfe3c8;--pm-bad-bg:#fdeaea;--pm-bad-fg:#c02a2a;--pm-bad-line:#f0c2c2;--pm-warn-bg:#fff5e0;--pm-warn-fg:#8a5b00;--pm-warn-line:#f0dcae;--pm-unk-bg:#f2f2f5;--pm-unk-fg:#5f5f68;--pm-unk-line:#dddde3;--pm-info-bg:#eef3ff;--pm-info-fg:#274b9f}@media (prefers-color-scheme: dark){:root{--pm-bg:#16171b;--pm-fg:#eceef3;--pm-muted:#9a9aa3;--pm-line:#2e2f36;--pm-btn:#24252b;--pm-btn-fg:#eceef3;--pm-primary:#4c8dff;--pm-primary-fg:#0b0c0f;--pm-ok-bg:#16301f;--pm-ok-fg:#7fd39b;--pm-ok-line:#245135;--pm-bad-bg:#35191b;--pm-bad-fg:#f08a8a;--pm-bad-line:#5a2a2d;--pm-warn-bg:#332a15;--pm-warn-fg:#e6c47a;--pm-warn-line:#5a4a24;--pm-unk-bg:#232429;--pm-unk-fg:#a8a8b2;--pm-unk-line:#36373f;--pm-info-bg:#1a2438;--pm-info-fg:#9dbcf5}}:root{color-scheme:light dark}*{box-sizing:border-box}body{margin:0;padding:20px 24px 40px;font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--pm-bg);color:var(--pm-fg)}h1{margin:0 0 4px;font-size:16px;font-weight:600}.sub{color:var(--pm-muted);margin-bottom:14px}.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 14px;padding:10px;border:1px solid var(--pm-line);border-radius:10px;background:var(--pm-btn)}.bar .spacer{flex:1}button{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:7px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--pm-btn-fg);cursor:pointer}button:hover:not(:disabled){border-color:var(--pm-primary)}button:disabled{opacity:.45;cursor:default}button.primary{background:var(--pm-primary);border-color:var(--pm-primary);color:var(--pm-primary-fg);font-weight:500}button.danger{color:var(--pm-bad-fg);border-color:var(--pm-bad-line)}table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--pm-line);vertical-align:middle}th{color:var(--pm-muted);font-weight:500;white-space:nowrap;font-size:12px}tr.route-row td{background:var(--pm-btn);font-weight:600}.probe-row td{background:transparent;padding-top:0}.probe-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:2px 0 10px}.probe-card{border:1px solid var(--pm-line);border-radius:9px;padding:8px 9px}.probe-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px}.probe-name{font-weight:600;font-size:12px}.kv{display:flex;gap:6px;font-size:11.5px;line-height:1.5;margin:1px 0}.kv b{flex:0 0 40px;color:var(--pm-muted);font-weight:500}.kv span{min-width:0;word-break:break-word}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}.pill{display:inline-block;padding:1px 6px;border-radius:99px;font-size:10.5px;border:1px solid var(--pm-unk-line);background:var(--pm-unk-bg);color:var(--pm-unk-fg);white-space:nowrap}.pill.ok{background:var(--pm-ok-bg);color:var(--pm-ok-fg);border-color:var(--pm-ok-line)}.pill.bad{background:var(--pm-bad-bg);color:var(--pm-bad-fg);border-color:var(--pm-bad-line)}.pill.warn{background:var(--pm-warn-bg);color:var(--pm-warn-fg);border-color:var(--pm-warn-line)}.pill.unk{background:var(--pm-unk-bg);color:var(--pm-unk-fg);border-color:var(--pm-unk-line)}.pill.managed{background:var(--pm-info-bg);color:var(--pm-info-fg);border-color:var(--pm-info-fg)}.banner{padding:9px 12px;border-radius:8px;margin-bottom:12px;font-size:12.5px}.banner.red{background:var(--pm-bad-bg);color:var(--pm-bad-fg)}.banner.amber{background:var(--pm-warn-bg);color:var(--pm-warn-fg)}.banner.info{background:var(--pm-info-bg);color:var(--pm-info-fg)}select{font:inherit;font-size:12.5px;padding:3px 7px;border-radius:7px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--pm-fg)}details summary{cursor:pointer;color:var(--pm-muted)}pre{max-height:260px;overflow:auto;background:var(--pm-btn);padding:10px;border-radius:8px;font-size:11.5px}.row-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.muted{color:var(--pm-muted)}.hidden-tag{opacity:.55;text-decoration:line-through}.flash{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1b1b1f;color:#fff;padding:8px 14px;border-radius:8px;font-size:12.5px;opacity:0;transition:opacity .15s;pointer-events:none;z-index:9}.flash.on{opacity:1}</style></head><body><div id="app"></div><script>const S = { inv: null, pending: {}, busy: '', lastDiff: null };
+const $ = (sel) => document.querySelector(sel);
+const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+function flash(msg){ const el = $('#flash'); el.textContent = msg; el.classList.add('on'); setTimeout(() => el.classList.remove('on'), 2200); }
+async function api(path, body){
+  const res = await fetch('/protocol-matrix/api' + path, body === undefined ? {} : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) });
+  return res.json();
+}
+function pillFor(entry){
+  if (!entry) return '<span class="pill unk">未探测</span>';
+  const v = entry.verdict || 'unknown';
+  const cls = v === 'recommended' ? 'ok' : v === 'usable' ? 'warn' : v === 'not_recommended' ? 'bad' : 'unk';
+  const label = v === 'recommended' ? '推荐' : v === 'usable' ? '可用' : v === 'not_recommended' ? '不推荐' : '未知';
+  return '<span class="pill ' + cls + '">' + label + (entry.score != null ? ' ' + entry.score : '') + '</span>';
+}
+function protocolLabel(p){ return { 'openai-completions': 'Chat', 'openai-responses': 'Responses', 'anthropic-messages': 'Anthropic' }[p] || p; }
+const PROTOCOLS = ['openai-completions', 'openai-responses', 'anthropic-messages'];
+function toneOf(v){ if (v === 'recommended' || v === 'supported' || v === 'ok' || v === 'exists') return 'ok'; if (v === 'not_recommended' || v === 'unsupported' || v === 'model-missing' || v === 'missing' || v === 'auth-failed') return 'bad'; if (v === 'usable') return 'warn'; return 'unk'; }
+function verdictLabel(v){ return ({ recommended: '推荐', usable: '可用', not_recommended: '不推荐', unknown: '未知', supported: '支持', unsupported: '不支持', ok: '可用', exists: '存在', missing: '不存在', 'model-missing': '模型不可用', 'auth-failed': '鉴权失败', 'rate-limited': '限流', 'not-applicable': '不适用' })[v] || (v || '未探测'); }
+function fmtTime(iso){ if (!iso) return ''; const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString(); }
+function kv(label, value){ return '<div class="kv"><b>' + esc(label) + '</b><span>' + value + '</span></div>'; }
+function probeCard(protocol, entry){
+  const head = '<div class="probe-head"><span class="probe-name">' + protocolLabel(protocol) + '</span>' + (entry ? '<span class="pill ' + toneOf(entry.verdict) + '">' + verdictLabel(entry.verdict) + (entry.score != null ? ' ' + entry.score : '') + '</span>' : '<span class="pill unk">未探测</span>') + '</div>';
+  if (!entry) return '<div class="probe-card">' + head + '<div class="kv muted">点右侧「探测」获取结论</div></div>';
+  let body = '';
+  body += kv('端点', '<span class="pill ' + toneOf(entry.endpoint && entry.endpoint.verdict) + '">' + verdictLabel(entry.endpoint && entry.endpoint.verdict) + '</span>' + (entry.endpoint && entry.endpoint.status ? ' ' + esc(entry.endpoint.status) : '') + (entry.endpoint && entry.endpoint.evidence ? ' <span class="muted">' + esc(entry.endpoint.evidence) + '</span>' : ''));
+  body += kv('模型', '<span class="pill ' + toneOf(entry.model && entry.model.verdict) + '">' + verdictLabel(entry.model && entry.model.verdict) + '</span>' + (entry.model && entry.model.ms ? ' ' + esc(entry.model.ms) + 'ms' : '') + (entry.model && entry.model.evidence ? ' <span class="muted">' + esc(entry.model.evidence) + '</span>' : ''));
+  if (entry.reasoning) body += kv('思考', '<span class="pill ' + toneOf(entry.reasoning.verdict) + '">' + verdictLabel(entry.reasoning.verdict) + '</span>' + (entry.reasoning.valid && entry.reasoning.valid.reasoning_tokens != null ? ' ' + esc(entry.reasoning.valid.reasoning_tokens) + ' tok' : ''));
+  if (entry.reasoning && entry.reasoning.evidence) body += kv('判据', '<span class="muted">' + esc(entry.reasoning.evidence) + '</span>');
+  if (entry.thinkingFormat) body += kv('格式', '<span class="pill ' + toneOf(entry.thinkingFormat.verdict) + '">' + verdictLabel(entry.thinkingFormat.verdict) + '</span>' + (entry.thinkingFormat.format ? ' ' + esc(entry.thinkingFormat.format) : ''));
+  if (entry.image) body += kv('图片', '<span class="pill ' + toneOf(entry.image.verdict) + '">' + verdictLabel(entry.image.verdict) + '</span>' + (entry.image.evidence ? ' <span class="muted">' + esc(entry.image.evidence).slice(0, 120) + '</span>' : ''));
+  if (entry.capacity) body += kv('容量', '<span class="muted">' + esc(entry.capacity.evidence || (entry.capacity.count ? entry.capacity.count + ' 个模型' : '')) + '</span>');
+  if (entry.note) body += kv('备注', '<span class="muted">' + esc(String(entry.note).slice(0, 160)) + '</span>');
+  body += '<div class="kv"><span class="muted">探测于 ' + esc(fmtTime(entry.checkedAt)) + '</span></div>';
+  return '<div class="probe-card">' + head + body + '</div>';
+}
+function render(){
+  const inv = S.inv;
+  const parts = [];
+  parts.push('<h1>模型协议矩阵</h1><div class="sub">每个模型单独选择请求协议；拆分出的路由由插件托管，可一键回滚。页面：<code>/protocol-matrix/ui</code></div>');
+  if (inv.gearbox) parts.push('<div class="banner red"><b>检测到 dsh-gearbox，两者二选一。</b> 已进入只读模式：可以浏览与探测，但不会写入任何配置。请先禁用/卸载 gearbox 再回来。</div>');
+  if (!inv.routes.length) parts.push('<div class="banner amber">没有读到 llm-pi-ai 的 provider 路由。请确认已挂载 @deepseek-ai/dsh-llm-pi-ai。</div>');
+  parts.push('<div class="bar">');
+  parts.push('<button class="primary" id="apply"' + (inv.gearbox ? ' disabled' : '') + '>应用变更</button>');
+  parts.push('<button id="validate">预览 Diff</button>');
+  parts.push('<button id="probeAll"' + (S.busy ? ' disabled' : '') + '>探测全部模型</button>');
+  parts.push('<button id="export">导出 YAML</button>');
+  if (inv.backups.length) parts.push('<button class="danger" id="restore">回滚到最近备份</button>');
+  if (S.busy) parts.push('<span class="muted">' + esc(S.busy) + '</span>');
+  parts.push('</div>');
+  parts.push('<table><thead><tr><th>模型</th><th>路由协议</th><th>协议选择</th><th>探测结论（三协议）</th><th>可见性</th></tr></thead><tbody>');
+  for (const route of inv.routes) {
+    parts.push('<tr class="route-row"><td colspan="5">' + esc(route.route) + ' <span class="muted">' + esc(protocolLabel(route.api) || '(未设 api)') + '</span>' + (route.managed ? ' <span class="pill managed">插件派生</span>' : '') + ' <span class="muted">' + esc(route.baseURL || '') + '</span></td></tr>');
+    for (const model of route.models) {
+      const key = route.route + '/' + model.id;
+      const selected = S.pending[key] !== undefined ? S.pending[key] : (model.selected || '');
+      const opts = [['', '继承路由'], ['openai-completions', 'Chat'], ['openai-responses', 'Responses'], ['anthropic-messages', 'Anthropic']]
+        .map(([v, label]) => '<option value='' + v + ''' + (v === selected ? ' selected' : '') + '>' + label + '</option>').join('');
+      const badges = PROTOCOLS.map((p) => {
+        const entry = model.protocols[p];
+        return '<span class="pill ' + toneOf(entry && entry.verdict) + '">' + protocolLabel(p).slice(0, 5) + ' ' + verdictLabel(entry && entry.verdict) + '</span>';
+      }).join(' ');
+      parts.push('<tr><td><code' + (model.hidden ? ' class="hidden-tag"' : '') + '>' + esc(model.id) + '</code>' + (model.hidden ? ' <span class="pill">已隐藏</span>' : '') + '</td>');
+      parts.push('<td class="muted">' + esc(protocolLabel(model.selected || route.api)) + '</td>');
+      parts.push('<td><select data-key="' + esc(key) + '">' + opts + '</select></td>');
+      parts.push('<td><div class="row-actions">' + badges + ' <button data-probe="' + esc(key) + '"' + (S.busy ? ' disabled' : '') + '>探测</button></div></td>');
+      parts.push('<td><label><input type="checkbox" data-hide="' + esc(key) + '"' + (model.hidden ? ' checked' : '') + '> 隐藏</label></td></tr>');
+      parts.push('<tr class="probe-row"><td colspan="5"><div class="probe-grid">' + PROTOCOLS.map((p) => probeCard(p, model.protocols[p])).join('') + '</div></td></tr>');
+    }
+  }
+  parts.push('</tbody></table>');
+  if (S.lastDiff) parts.push('<h1 style="margin-top:18px">Diff 预览</h1><pre>' + esc(JSON.stringify(S.lastDiff, null, 2)) + '</pre>');
+  parts.push('<div class="flash" id="flash"></div>');
+  $('#app').innerHTML = parts.join('');
+  bind();
+}
+function bind(){
+  document.querySelectorAll('select[data-key]').forEach((el) => el.addEventListener('change', () => {
+    const key = el.getAttribute('data-key');
+    S.pending[key] = el.value === '' ? null : el.value;
+    flash('已记录：' + key + ' → ' + (el.value || '继承路由') + '（点“应用变更”写入）');
+  }));
+  document.querySelectorAll('button[data-probe]').forEach((el) => el.addEventListener('click', () => probeOne(el.getAttribute('data-probe'))));
+  document.querySelectorAll('input[data-hide]').forEach((el) => el.addEventListener('change', () => toggleHidden(el.getAttribute('data-hide'), el.checked)));
+  const apply = $('#apply'); if (apply) apply.addEventListener('click', applyAll);
+  const va = $('#validate'); if (va) va.addEventListener('click', previewDiff);
+  const pa = $('#probeAll'); if (pa) pa.addEventListener('click', probeAll);
+  const ex = $('#export'); if (ex) ex.addEventListener('click', exportYaml);
+  const rs = $('#restore'); if (rs) rs.addEventListener('click', restoreBackup);
+}
+async function load(){ const res = await api('/inventory'); S.inv = res; render(); }
+async function probeOne(key){
+  const slash = key.indexOf('/'); const route = key.slice(0, slash); const model = key.slice(slash + 1);
+  S.busy = '探测 ' + key + ' …'; render();
+  const out = await api('/probe', { route, model });
+  S.busy = '';
+  await load();
+  const summary = (out.results || []).map((r) => protocolLabel(r.protocol) + '=' + verdictLabel(r.verdict)).join(' · ');
+  flash(out.ok ? ('探测完成：' + key + ' → ' + summary + '（结果见该行下方）') : ('探测失败：' + (out.error || '')));
+}
+async function probeAll(){
+  const keys = []; for (const r of S.inv.routes) for (const m of r.models) keys.push([r.route, m.id]);
+  for (let i = 0; i < keys.length; i++) { S.busy = '探测 ' + (i + 1) + '/' + keys.length; render(); await api('/probe', { route: keys[i][0], model: keys[i][1] }); }
+  S.busy = ''; await load(); flash('全部探测完成：每行下方已展开三协议结论');
+}
+async function previewDiff(){
+  const out = await api('/validate', { plan: S.pending });
+  S.lastDiff = { diff: out.diff, notes: out.notes, conflicts: out.conflicts, rejected: out.rejected, changed: out.changed };
+  render(); flash(out.rejected && out.rejected.length ? '存在会被拒绝的字段，见预览' : (out.changed ? '有变更待应用' : '当前配置已是目标状态'));
+}
+async function applyAll(){
+  const out = await api('/apply', { plan: S.pending });
+  if (!out.ok) { flash('应用失败：' + (out.code || '') + ' ' + (out.error || '')); S.lastDiff = out; render(); return; }
+  S.pending = {}; S.lastDiff = out.changed ? out : null; await load();
+  flash(out.changed ? '已写入配置（备份：' + ((out.backup && out.backup.snapshot) || '') + '）' : '无变更，未写入');
+}
+async function toggleHidden(key, hidden){
+  const slash = key.indexOf('/');
+  const out = await api('/visibility', { route: key.slice(0, slash), model: key.slice(slash + 1), hidden });
+  flash(out.ok ? (hidden ? '已从所有模型选择器隐藏（本页仍可见）' : '已恢复显示') : '操作失败');
+}
+async function restoreBackup(){
+  if (!confirm('用最近一次备份覆盖当前 llm-pi-ai 配置？')) return;
+  const out = await api('/restore', {});
+  await load(); flash(out.ok ? '已回滚' : '回滚失败：' + (out.error || ''));
+}
+function yamlOf(value, indent){
+  const pad = '  '.repeat(indent);
+  if (Array.isArray(value)) return value.map((v) => pad + '- ' + yamlOf(v, indent + 1).trimStart()).join('\n');
+  if (value && typeof value === 'object') return Object.entries(value).map(([k, v]) => v && typeof v === 'object' ? pad + k + ':\n' + yamlOf(v, indent + 1) : pad + k + ':' + (typeof v === 'string' ? ' ' + JSON.stringify(v) : ' ' + String(v))).join('\n');
+  return pad + String(value);
+}
+async function exportYaml(){
+  const out = await api('/validate', { plan: S.pending });
+  const text = 'providers:\n' + yamlOf(Object.fromEntries((S.inv.routes.map((r) => [r.route, { api: r.api, baseURL: r.baseURL }]))), 1);
+  S.lastDiff = { yaml: text, diff: out.diff, notes: out.notes };
+  render(); flash('已生成 YAML 片段（见下方预览）');
+}
+load().catch((error) => { $('#app').innerHTML = '<div class="banner red">加载失败：' + esc(String(error)) + '</div>'; });</script></body></html>
