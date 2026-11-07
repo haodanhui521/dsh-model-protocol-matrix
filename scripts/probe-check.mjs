@@ -55,6 +55,7 @@ const server = createServer(async (req, res) => {
     const model = body.model;
     if (hasImage) {
       if (model === 'image-load-error') return json(400, { error: "Error while loading data ImageData(url='data:image/png;base64,AAA')" });
+      if (model === 'image-upload-rejected') return json(400, { error: 'messages[0].image[0]: You have uploaded an unsupported image. Please make sure it is a valid image.' });
       if (model === 'image-unsupported') return json(400, { error: 'model does not support image input' });
       return json(200, { output: [{ type: 'message', content: [{ type: 'output_text', text: 'ok' }] }], usage: { output_tokens_details: { reasoning_tokens: 5 } } });
     }
@@ -179,6 +180,11 @@ await t('图片加载失败 → unknown（不是 unsupported）', async () => {
 await t('图片能力确实不支持 → unsupported', async () => {
   const r = await probeImage({ baseURL: base, api: 'openai-responses', model: 'image-unsupported', key: KEY });
   assert.equal(r.verdict, 'unsupported');
+});
+await t('“uploaded an unsupported image” → unknown（不是能力缺失）', async () => {
+  const r = await probeImage({ baseURL: base, api: 'openai-responses', model: 'image-upload-rejected', key: KEY });
+  assert.equal(r.verdict, 'unknown');
+  assert.equal(r.tried.length, 3, 'should try png/png/jpeg');
 });
 await t('全维度探测 + 评分 → recommended', async () => {
   const r = await probeModelProtocol({ route: 'laiyifen', model: 'deepseek-v4.1-flash', protocol: 'openai-responses', baseURL: base, key: KEY, runId: 'test' });

@@ -1,4 +1,4 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>模型协议矩阵</title><style>:root{--pm-bg:#ffffff;--pm-fg:#1b1b1f;--pm-muted:#77777f;--pm-line:#e3e3e9;--pm-btn:#f2f2f7;--pm-btn-fg:#1b1b1f;--pm-primary:#2f6feb;--pm-primary-fg:#ffffff;--pm-ok-bg:#e6f4ea;--pm-ok-fg:#1a7f37;--pm-ok-line:#bfe3c8;--pm-bad-bg:#fdeaea;--pm-bad-fg:#c02a2a;--pm-bad-line:#f0c2c2;--pm-warn-bg:#fff5e0;--pm-warn-fg:#8a5b00;--pm-warn-line:#f0dcae;--pm-unk-bg:#f2f2f5;--pm-unk-fg:#5f5f68;--pm-unk-line:#dddde3;--pm-info-bg:#eef3ff;--pm-info-fg:#274b9f}@media (prefers-color-scheme: dark){:root{--pm-bg:#16171b;--pm-fg:#eceef3;--pm-muted:#9a9aa3;--pm-line:#2e2f36;--pm-btn:#24252b;--pm-btn-fg:#eceef3;--pm-primary:#4c8dff;--pm-primary-fg:#0b0c0f;--pm-ok-bg:#16301f;--pm-ok-fg:#7fd39b;--pm-ok-line:#245135;--pm-bad-bg:#35191b;--pm-bad-fg:#f08a8a;--pm-bad-line:#5a2a2d;--pm-warn-bg:#332a15;--pm-warn-fg:#e6c47a;--pm-warn-line:#5a4a24;--pm-unk-bg:#232429;--pm-unk-fg:#a8a8b2;--pm-unk-line:#36373f;--pm-info-bg:#1a2438;--pm-info-fg:#9dbcf5}}:root{color-scheme:light dark}*{box-sizing:border-box}body{margin:0;padding:20px 24px 40px;font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--pm-bg);color:var(--pm-fg)}h1{margin:0 0 4px;font-size:16px;font-weight:600}.sub{color:var(--pm-muted);margin-bottom:14px}.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 14px;padding:10px;border:1px solid var(--pm-line);border-radius:10px;background:var(--pm-btn)}.bar .spacer{flex:1}button{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:7px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--pm-btn-fg);cursor:pointer}button:hover:not(:disabled){border-color:var(--pm-primary)}button:disabled{opacity:.45;cursor:default}button.primary{background:var(--pm-primary);border-color:var(--pm-primary);color:var(--pm-primary-fg);font-weight:500}button.danger{color:var(--pm-bad-fg);border-color:var(--pm-bad-line)}table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--pm-line);vertical-align:middle}th{color:var(--pm-muted);font-weight:500;white-space:nowrap;font-size:12px}tr.route-row td{background:var(--pm-btn);font-weight:600}.probe-row td{background:transparent;padding-top:0}.probe-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:2px 0 10px}.probe-card{border:1px solid var(--pm-line);border-radius:9px;padding:8px 9px}.probe-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px}.probe-name{font-weight:600;font-size:12px}.kv{display:flex;gap:6px;font-size:11.5px;line-height:1.5;margin:1px 0}.kv b{flex:0 0 40px;color:var(--pm-muted);font-weight:500}.kv span{min-width:0;word-break:break-word}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}.pill{display:inline-block;padding:1px 6px;border-radius:99px;font-size:10.5px;border:1px solid var(--pm-unk-line);background:var(--pm-unk-bg);color:var(--pm-unk-fg);white-space:nowrap}.pill.ok{background:var(--pm-ok-bg);color:var(--pm-ok-fg);border-color:var(--pm-ok-line)}.pill.bad{background:var(--pm-bad-bg);color:var(--pm-bad-fg);border-color:var(--pm-bad-line)}.pill.warn{background:var(--pm-warn-bg);color:var(--pm-warn-fg);border-color:var(--pm-warn-line)}.pill.unk{background:var(--pm-unk-bg);color:var(--pm-unk-fg);border-color:var(--pm-unk-line)}.pill.managed{background:var(--pm-info-bg);color:var(--pm-info-fg);border-color:var(--pm-info-fg)}.banner{padding:9px 12px;border-radius:8px;margin-bottom:12px;font-size:12.5px}.banner.red{background:var(--pm-bad-bg);color:var(--pm-bad-fg)}.banner.amber{background:var(--pm-warn-bg);color:var(--pm-warn-fg)}.banner.info{background:var(--pm-info-bg);color:var(--pm-info-fg)}select{font:inherit;font-size:12.5px;padding:3px 7px;border-radius:7px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--pm-fg)}details summary{cursor:pointer;color:var(--pm-muted)}pre{max-height:260px;overflow:auto;background:var(--pm-btn);padding:10px;border-radius:8px;font-size:11.5px}.row-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.muted{color:var(--pm-muted)}.hidden-tag{opacity:.55;text-decoration:line-through}.flash{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1b1b1f;color:#fff;padding:8px 14px;border-radius:8px;font-size:12.5px;opacity:0;transition:opacity .15s;pointer-events:none;z-index:9}.flash.on{opacity:1}</style></head><body><div id="app"></div><script>const S = { inv: null, pending: {}, busy: '', lastDiff: null };
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>模型协议矩阵</title><style>:root{--pm-bg:#ffffff;--pm-fg:#1b1b1f;--pm-muted:#77777f;--pm-line:#e3e3e9;--pm-btn:#f2f2f7;--pm-btn-fg:#1b1b1f;--pm-primary:#2f6feb;--pm-primary-fg:#ffffff;--pm-ok-bg:#e6f4ea;--pm-ok-fg:#1a7f37;--pm-ok-line:#bfe3c8;--pm-bad-bg:#fdeaea;--pm-bad-fg:#c02a2a;--pm-bad-line:#f0c2c2;--pm-warn-bg:#fff5e0;--pm-warn-fg:#8a5b00;--pm-warn-line:#f0dcae;--pm-unk-bg:#f2f2f5;--pm-unk-fg:#5f5f68;--pm-unk-line:#dddde3;--pm-info-bg:#eef3ff;--pm-info-fg:#274b9f}@media (prefers-color-scheme: dark){:root{--pm-bg:#16171b;--pm-fg:#eceef3;--pm-muted:#9a9aa3;--pm-line:#2e2f36;--pm-btn:#24252b;--pm-btn-fg:#eceef3;--pm-primary:#4c8dff;--pm-primary-fg:#0b0c0f;--pm-ok-bg:#16301f;--pm-ok-fg:#7fd39b;--pm-ok-line:#245135;--pm-bad-bg:#35191b;--pm-bad-fg:#f08a8a;--pm-bad-line:#5a2a2d;--pm-warn-bg:#332a15;--pm-warn-fg:#e6c47a;--pm-warn-line:#5a4a24;--pm-unk-bg:#232429;--pm-unk-fg:#a8a8b2;--pm-unk-line:#36373f;--pm-info-bg:#1a2438;--pm-info-fg:#9dbcf5}}:root{color-scheme:light dark}*{box-sizing:border-box}body{margin:0;padding:20px 24px 40px;font:13px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--pm-bg);color:var(--pm-fg)}h1{margin:0 0 4px;font-size:16px;font-weight:600}.sub{color:var(--pm-muted);margin-bottom:14px}.bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0 14px;padding:10px;border:1px solid var(--pm-line);border-radius:10px;background:var(--pm-btn)}.bar .spacer{flex:1}button{font:inherit;font-size:12.5px;padding:6px 12px;border-radius:7px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--pm-btn-fg);cursor:pointer}button:hover:not(:disabled){border-color:var(--pm-primary)}button:disabled{opacity:.45;cursor:default}button.primary{background:var(--pm-primary);border-color:var(--pm-primary);color:var(--pm-primary-fg);font-weight:500}button.danger{color:var(--pm-bad-fg);border-color:var(--pm-bad-line)}table{width:100%;border-collapse:collapse;font-size:12.5px}th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--pm-line);vertical-align:middle}th{color:var(--pm-muted);font-weight:500;white-space:nowrap;font-size:12px}tr.route-row td{background:var(--pm-btn);font-weight:600}.probe-row td{background:transparent;padding-top:0}.probe-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;padding:2px 0 10px}.probe-card{border:1px solid var(--pm-line);border-radius:9px;padding:8px 9px}.probe-head{display:flex;align-items:center;justify-content:space-between;gap:6px;margin-bottom:5px}.probe-name{font-weight:600;font-size:12px}.kv{display:flex;gap:6px;font-size:11.5px;line-height:1.5;margin:1px 0}.kv b{flex:0 0 40px;color:var(--pm-muted);font-weight:500}.kv span{min-width:0;word-break:break-word}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11.5px}.pill{display:inline-block;padding:1px 6px;border-radius:99px;font-size:10.5px;border:1px solid var(--pm-unk-line);background:var(--pm-unk-bg);color:var(--pm-unk-fg);white-space:nowrap}.pill.ok{background:var(--pm-ok-bg);color:var(--pm-ok-fg);border-color:var(--pm-ok-line)}.pill.bad{background:var(--pm-bad-bg);color:var(--pm-bad-fg);border-color:var(--pm-bad-line)}.pill.warn{background:var(--pm-warn-bg);color:var(--pm-warn-fg);border-color:var(--pm-warn-line)}.pill.unk{background:var(--pm-unk-bg);color:var(--pm-unk-fg);border-color:var(--pm-unk-line)}.pill.managed{background:var(--pm-info-bg);color:var(--pm-info-fg);border-color:var(--pm-info-fg)}.banner{padding:9px 12px;border-radius:8px;margin-bottom:12px;font-size:12.5px}.banner.red{background:var(--pm-bad-bg);color:var(--pm-bad-fg)}.banner.amber{background:var(--pm-warn-bg);color:var(--pm-warn-fg)}.banner.info{background:var(--pm-info-bg);color:var(--pm-info-fg)}select{font:inherit;font-size:12.5px;padding:3px 7px;border-radius:7px;border:1px solid var(--pm-line);background:var(--pm-bg);color:var(--pm-fg)}details summary{cursor:pointer;color:var(--pm-muted)}pre{max-height:260px;overflow:auto;background:var(--pm-btn);padding:10px;border-radius:8px;font-size:11.5px}.row-actions{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.muted{color:var(--pm-muted)}.hidden-tag{opacity:.55;text-decoration:line-through}.flash{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#1b1b1f;color:#fff;padding:8px 14px;border-radius:8px;font-size:12.5px;opacity:0;transition:opacity .15s;pointer-events:none;z-index:9}.flash.on{opacity:1}</style></head><body><div id="app"></div><script>const S = { inv: null, pending: {}, busy: '', lastDiff: null, stop: false };
 const $ = (sel) => document.querySelector(sel);
 const esc = (v) => String(v == null ? '' : v).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 function flash(msg){ const el = $('#flash'); el.textContent = msg; el.classList.add('on'); setTimeout(() => el.classList.remove('on'), 2200); }
@@ -48,6 +48,7 @@ function render(){
   parts.push('<button id="export">导出 YAML</button>');
   if (inv.backups.length) parts.push('<button class="danger" id="restore">回滚到最近备份</button>');
   if (S.busy) parts.push('<span class="muted">' + esc(S.busy) + '</span>');
+  if (S.busy) parts.push('<button id="stopProbe" class="danger">停止</button>');
   parts.push('</div>');
   parts.push('<table><thead><tr><th>模型</th><th>路由协议</th><th>协议选择</th><th>探测结论（三协议）</th><th>可见性</th></tr></thead><tbody>');
   for (const route of inv.routes) {
@@ -88,21 +89,43 @@ function bind(){
   const pa = $('#probeAll'); if (pa) pa.addEventListener('click', probeAll);
   const ex = $('#export'); if (ex) ex.addEventListener('click', exportYaml);
   const rs = $('#restore'); if (rs) rs.addEventListener('click', restoreBackup);
+  const sp = $('#stopProbe'); if (sp) sp.addEventListener('click', () => { S.stop = true; flash('将在当前协议结束后停止'); });
 }
 async function load(){ const res = await api('/inventory'); S.inv = res; render(); }
-async function probeOne(key){
+/** 一个协议一次请求：每完成一个协议就落缓存并刷新卡片，用户能立刻看到部分结论。 */
+async function probeOne(key, quiet){
   const slash = key.indexOf('/'); const route = key.slice(0, slash); const model = key.slice(slash + 1);
-  S.busy = '探测 ' + key + ' …'; render();
-  const out = await api('/probe', { route, model });
+  let done = 0;
+  let failed = null;
+  for (let i = 0; i < PROTOCOLS.length; i++) {
+    if (S.stop) break;
+    const p = PROTOCOLS[i];
+    S.busy = '探测 ' + key + ' · ' + protocolLabel(p) + ' (' + (i + 1) + '/' + PROTOCOLS.length + ')';
+    render();
+    try {
+      const out = await api('/probe', { route, model, protocols: [p] });
+      if (!out.ok) failed = out.error || 'unknown';
+      else done += 1;
+    } catch (error) { failed = String((error && error.message) || error); }
+    await load();
+  }
   S.busy = '';
   await load();
-  const summary = (out.results || []).map((r) => protocolLabel(r.protocol) + '=' + usableLabel(r.verdict)).join(' · ');
-  flash(out.ok ? ('探测完成：' + key + ' → ' + summary + '（结果见该行下方）') : ('探测失败：' + (out.error || '')));
+  if (quiet) return;
+  if (failed && done === 0) flash('探测失败：' + key + ' → ' + failed);
+  else flash('探测完成：' + key + '（' + done + '/' + PROTOCOLS.length + ' 个协议）' + (failed ? ' · 部分失败：' + failed : ''));
 }
 async function probeAll(){
   const keys = []; for (const r of S.inv.routes) for (const m of r.models) keys.push([r.route, m.id]);
-  for (let i = 0; i < keys.length; i++) { S.busy = '探测 ' + (i + 1) + '/' + keys.length; render(); await api('/probe', { route: keys[i][0], model: keys[i][1] }); }
-  S.busy = ''; await load(); flash('全部探测完成：每行下方已展开三协议结论');
+  S.stop = false;
+  for (let i = 0; i < keys.length; i++) {
+    if (S.stop) break;
+    S.busy = '探测 ' + (i + 1) + '/' + keys.length + ' 个模型：' + keys[i][0] + '/' + keys[i][1];
+    render();
+    await probeOne(keys[i][0] + '/' + keys[i][1], true);
+  }
+  S.busy = ''; await load();
+  flash(S.stop ? '已停止（已完成的部分保留）' : '全部探测完成：每行下方已展开三协议结论');
 }
 async function previewDiff(){
   const out = await api('/validate', { plan: S.pending });
