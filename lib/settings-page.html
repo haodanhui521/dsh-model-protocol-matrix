@@ -17,10 +17,11 @@ function protocolLabel(p){ return { 'openai-completions': 'Chat', 'openai-respon
 const PROTOCOLS = ['openai-completions', 'openai-responses', 'anthropic-messages'];
 function toneOf(v){ if (v === 'recommended' || v === 'supported' || v === 'ok' || v === 'exists') return 'ok'; if (v === 'not_recommended' || v === 'unsupported' || v === 'model-missing' || v === 'missing' || v === 'auth-failed') return 'bad'; if (v === 'usable') return 'warn'; return 'unk'; }
 function verdictLabel(v){ return ({ recommended: '推荐', usable: '可用', not_recommended: '不推荐', unknown: '未知', supported: '支持', unsupported: '不支持', ok: '可用', exists: '存在', missing: '不存在', 'model-missing': '模型不可用', 'auth-failed': '鉴权失败', 'rate-limited': '限流', 'not-applicable': '不适用' })[v] || (v || '未探测'); }
+function usableLabel(v){ if (v === 'recommended' || v === 'usable') return '可用'; if (v === 'not_recommended') return '不可用'; return '未知'; }
 function fmtTime(iso){ if (!iso) return ''; const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleString(); }
 function kv(label, value){ return '<div class="kv"><b>' + esc(label) + '</b><span>' + value + '</span></div>'; }
 function probeCard(protocol, entry){
-  const head = '<div class="probe-head"><span class="probe-name">' + protocolLabel(protocol) + '</span>' + (entry ? '<span class="pill ' + toneOf(entry.verdict) + '">' + verdictLabel(entry.verdict) + (entry.score != null ? ' ' + entry.score : '') + '</span>' : '<span class="pill unk">未探测</span>') + '</div>';
+  const head = '<div class="probe-head"><span class="probe-name">' + protocolLabel(protocol) + '</span>' + (entry ? '<span class="pill ' + toneOf(entry.verdict) + '">' + usableLabel(entry.verdict) + '</span>' : '<span class="pill unk">未探测</span>') + '</div>';
   if (!entry) return '<div class="probe-card">' + head + '<div class="kv muted">点右侧「探测」获取结论</div></div>';
   let body = '';
   body += kv('端点', '<span class="pill ' + toneOf(entry.endpoint && entry.endpoint.verdict) + '">' + verdictLabel(entry.endpoint && entry.endpoint.verdict) + '</span>' + (entry.endpoint && entry.endpoint.status ? ' ' + esc(entry.endpoint.status) : '') + (entry.endpoint && entry.endpoint.evidence ? ' <span class="muted">' + esc(entry.endpoint.evidence) + '</span>' : ''));
@@ -55,10 +56,10 @@ function render(){
       const key = route.route + '/' + model.id;
       const selected = S.pending[key] !== undefined ? S.pending[key] : (model.selected || '');
       const opts = [['', '继承路由'], ['openai-completions', 'Chat'], ['openai-responses', 'Responses'], ['anthropic-messages', 'Anthropic']]
-        .map(([v, label]) => '<option value='' + v + ''' + (v === selected ? ' selected' : '') + '>' + label + '</option>').join('');
+        .map(([v, label]) => '<option value="' + v + '"' + (v === selected ? ' selected' : '') + '>' + label + '</option>').join('');
       const badges = PROTOCOLS.map((p) => {
         const entry = model.protocols[p];
-        return '<span class="pill ' + toneOf(entry && entry.verdict) + '">' + protocolLabel(p).slice(0, 5) + ' ' + verdictLabel(entry && entry.verdict) + '</span>';
+        return '<span class="pill ' + toneOf(entry && entry.verdict) + '">' + protocolLabel(p).slice(0, 5) + ' ' + usableLabel(entry && entry.verdict) + '</span>';
       }).join(' ');
       parts.push('<tr><td><code' + (model.hidden ? ' class="hidden-tag"' : '') + '>' + esc(model.id) + '</code>' + (model.hidden ? ' <span class="pill">已隐藏</span>' : '') + '</td>');
       parts.push('<td class="muted">' + esc(protocolLabel(model.selected || route.api)) + '</td>');
@@ -95,7 +96,7 @@ async function probeOne(key){
   const out = await api('/probe', { route, model });
   S.busy = '';
   await load();
-  const summary = (out.results || []).map((r) => protocolLabel(r.protocol) + '=' + verdictLabel(r.verdict)).join(' · ');
+  const summary = (out.results || []).map((r) => protocolLabel(r.protocol) + '=' + usableLabel(r.verdict)).join(' · ');
   flash(out.ok ? ('探测完成：' + key + ' → ' + summary + '（结果见该行下方）') : ('探测失败：' + (out.error || '')));
 }
 async function probeAll(){
