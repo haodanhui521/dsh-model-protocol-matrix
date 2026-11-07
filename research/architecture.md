@@ -53,3 +53,19 @@ editor.edit(entry, (current, inherited) => next)   // change 必须同步
 包装它一处即可覆盖 composer（`modelDirectories → remote.session.modelCatalog`）、
 子代理、官方模型页。包装用实例属性遮蔽 + `ctx.effect` 自动还原，并用
 `Symbol.for('dsh-model-protocol-matrix/listModels')` 防重复包装。
+
+## 6. 真实网关验证（2026-11-07，laiyifen）
+
+判定逻辑的两次修正都来自真实数据：
+
+| 现象 | 原判定 | 修正 |
+|---|---|---|
+| responses 下“非法 effort”被端点接受 | 只要有推理就判 supported | 增加第三次“省略思考参数”的差分请求；关不掉就判 unknown |
+| 1x1 PNG 被网关报 "Error while loading data ImageData" | 命中 image/unsupported 正则 → unsupported | 区分“能力缺失”与“图片加载失败”；后者换 8x8 复核，仍失败判 unknown |
+| /v1/models 只有 id，没有容量字段 | table 全空、无解释 | capacity 结果带 evidence（样本键名），明确“该网关不提供容量” |
+
+实测结论：
+
+- `glm-5.3-flash` @ responses → 400 `The model does not support v1/responses`（not_recommended）
+- `glm-5.3-flash` @ chat → reasoning supported、thinkingFormat=openai、image supported
+- `deepseek-v4.1-flash` @ responses → reasoning supported（非法 effort 被拒）

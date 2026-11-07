@@ -102,6 +102,22 @@ gearbox 用“写入前 preview + deepEqual 短路”压住这个循环；本插
 
 patch 里只留静态设置（`enabled`、`probe.timeoutMs` 等）。
 
+## 实测记录（laiyifen 网关，2026-11-07）
+
+\`\`\`
+glm-5.3-flash        @ chat        model ok · reasoning supported（非法 effort 被拒：[low, high, max]）
+                                   thinkingFormat=openai · image supported（8x8；1x1 被拒加载）
+glm-5.3-flash        @ responses   model-missing 400：The model does not support v1/responses
+deepseek-v4.1-flash  @ responses   model ok · reasoning supported（非法 effort 被拒：
+                                   The request parameter reasoning.effort is invalid or missing）
+                                   image supported
+两者 @ /v1/models      31 个模型，但只返回 id/object/created/owned_by/supported_endpoint_types
+                       —— 没有容量字段，contextWindow / maxTokens 需手动填
+\`\`\`
+
+结论：\`glm-5.3-flash\` 留在 \`laiyifen\`（chat），\`deepseek-v4.1-flash\` 拆到
+\`laiyifen-responses\`（responses）——正是本插件要自动完成的拆分。
+
 ## 边界与冲突
 
 - **只支持 desktop profile**（`~/.dsh/profiles/desktop`）。

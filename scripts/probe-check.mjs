@@ -52,8 +52,24 @@ const server = createServer(async (req, res) => {
     });
   }
   if (url.pathname === '/v1/responses') {
+    const model = body.model;
+    if (hasImage) {
+      if (model === 'image-load-error') return json(400, { error: "Error while loading data ImageData(url='data:image/png;base64,AAA')" });
+      if (model === 'image-unsupported') return json(400, { error: 'model does not support image input' });
+      return json(200, { output: [{ type: 'message', content: [{ type: 'output_text', text: 'ok' }] }], usage: { output_tokens_details: { reasoning_tokens: 5 } } });
+    }
+    // 忽略 effort 取值、但“关闭思考”确实有效的网关
+    if (model === 'switchable-model') {
+      if (body.reasoning === undefined) {
+        return json(200, { output: [{ type: 'message', content: [{ type: 'output_text', text: 'ok' }] }], usage: { output_tokens_details: { reasoning_tokens: 0 } } });
+      }
+      return json(200, { output: [{ type: 'reasoning', summary: [] }], usage: { output_tokens_details: { reasoning_tokens: 25 } } });
+    }
+    // 无视 effort、且“关闭”也关不掉（总是思考）
+    if (model === 'ignores-effort-model') {
+      return json(200, { output: [{ type: 'reasoning', summary: [] }], usage: { output_tokens_details: { reasoning_tokens: 30 } } });
+    }
     if (body.reasoning && body.reasoning.effort === 'definitely-not-an-effort') return json(400, { error: 'invalid reasoning.effort' });
-    if (hasImage) return json(200, { output: [{ type: 'message', content: [{ type: 'output_text', text: 'ok' }] }], usage: { output_tokens_details: { reasoning_tokens: 5 } } });
     return json(200, {
       output: [{ type: 'reasoning', summary: [] }, { type: 'message', content: [{ type: 'output_text', text: 'ok' }] }],
       usage: { output_tokens_details: { reasoning_tokens: 37 } },
@@ -145,6 +161,24 @@ await t('模型列表容量解析（三种字段名）', async () => {
   assert.equal(r.verdict, 'ok');
   assert.equal(r.table['deepseek-v4.1-flash'].contextWindow, 1000000);
   assert.equal(r.table['deepseek-v4.1-flash'].maxTokens, 384000);
+});
+await t('差分对照：effort 被忽略但“关闭思考”有效 → supported', async () => {
+  const r = await probeReasoning({ baseURL: base, api: 'openai-responses', model: 'switchable-model', key: KEY });
+  assert.equal(r.verdict, 'supported');
+  assert.equal(r.off.signal, 'no');
+});
+await t('effort 被忽略且关不掉 → unknown（不冒充 supported）', async () => {
+  const r = await probeReasoning({ baseURL: base, api: 'openai-responses', model: 'ignores-effort-model', key: KEY });
+  assert.equal(r.verdict, 'unknown');
+  assert.equal(r.off.signal, 'yes');
+});
+await t('图片加载失败 → unknown（不是 unsupported）', async () => {
+  const r = await probeImage({ baseURL: base, api: 'openai-responses', model: 'image-load-error', key: KEY });
+  assert.equal(r.verdict, 'unknown');
+});
+await t('图片能力确实不支持 → unsupported', async () => {
+  const r = await probeImage({ baseURL: base, api: 'openai-responses', model: 'image-unsupported', key: KEY });
+  assert.equal(r.verdict, 'unsupported');
 });
 await t('全维度探测 + 评分 → recommended', async () => {
   const r = await probeModelProtocol({ route: 'laiyifen', model: 'deepseek-v4.1-flash', protocol: 'openai-responses', baseURL: base, key: KEY, runId: 'test' });
