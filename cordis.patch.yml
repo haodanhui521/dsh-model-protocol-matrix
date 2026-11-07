@@ -1,0 +1,11 @@
+# dsh-model-protocol-matrix — bundle patch.
+#
+# 只插入本插件自己的 loader 条目；不改动 llm-pi-ai。
+# 本插件的“意图表 / 清单 / 隐藏列表”存放在
+#   ~/.dsh/profiles/desktop/.dsh-model-protocol-matrix/
+# 而不是这里的 config，原因见 README「为什么配置不放在 patch 里」。
+- insert:
+    - id: protocol-matrix
+      name: "dsh-model-protocol-matrix"
+      config:
+        enabled: true
