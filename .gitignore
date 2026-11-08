@@ -1,3 +1,4 @@
 node_modules/
 *.log
 .DS_Store
+dsh-model-protocol-matrix-*.tgz
