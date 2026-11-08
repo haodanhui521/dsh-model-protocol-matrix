@@ -8,7 +8,7 @@
 import assert from 'node:assert/strict';
 import { clipCompat, normalizeBaseURL, assertGateForModel, COMPAT_GATES } from '../lib/compat.js';
 import { plan, mergeProviders, deriveRouteName } from '../lib/planner.js';
-import { applyIntent, normalizeIntent, validateProviders, managedRoutesAfter } from '../lib/apply.js';
+import { applyIntent, normalizeIntent, validateProviders, managedRoutesAfter, restoreOriginal } from '../lib/apply.js';
 
 let pass = 0;
 let fail = 0;
@@ -358,6 +358,48 @@ test('managedRoutesAfter：create 记录、delete 清理', () => {
   );
   assert.equal(after['r-responses'].parent, 'r');
   assert.equal(after['r-anthropic'], undefined);
+});
+
+// ----------------------------------------------------------------- 卸载安全（恢复原始结构）
+
+group('卸载安全 · 恢复原始结构');
+await testAsync('apply 记录 baseline，restoreOriginal 还原并清空托管状态', async () => {
+  const editor = makeEditor(LAIYIFEN);
+  const store = makeStore();
+  await applyIntent({ editor, entry: editor.entry, store, input: { plan: { 'laiyifen/deepseek-v4.1-flash': 'openai-responses' } } });
+  assert.ok(editor.state.override.providers['laiyifen-responses'], '拆分应已生效');
+  assert.ok(store.state.manifest.baseline && store.state.manifest.baseline.providers, 'baseline 已记录');
+
+  const out = await restoreOriginal({ editor, entry: editor.entry, store });
+  assert.equal(out.ok, true, JSON.stringify(out));
+  assert.equal(editor.state.override.providers['laiyifen-responses'], undefined, '派生路由已删除');
+  assert.deepEqual(editor.state.override.providers.laiyifen.models.map((m) => m.id), ['glm-5.3-flash', 'deepseek-v4.1-flash'], '模型回到原路由');
+  assert.equal(store.state.manifest.managedRoutes['laiyifen-responses'], undefined, '托管清单已清');
+  assert.deepEqual(store.state.intent.routes, {}, '意图已清');
+});
+await testAsync('无 baseline 时恢复返回 NO_BASELINE（未接管过，无需恢复）', async () => {
+  const editor = makeEditor(LAIYIFEN);
+  const store = makeStore();
+  const out = await restoreOriginal({ editor, entry: editor.entry, store });
+  assert.equal(out.ok, false);
+  assert.equal(out.code, 'NO_BASELINE');
+});
+await testAsync('恢复过程回读不一致 → 回滚到恢复前状态', async () => {
+  const editor = makeEditor(LAIYIFEN);
+  const store = makeStore();
+  await applyIntent({ editor, entry: editor.entry, store, input: { plan: { 'laiyifen/deepseek-v4.1-flash': 'openai-responses' } } });
+  const beforeRestore = JSON.stringify(editor.state.override);
+  let calls = 0;
+  const realEdit = editor.edit;
+  editor.edit = async (entry, change) => {
+    calls += 1;
+    if (calls === 1) { await realEdit(entry, () => ({ providers: { broken: { api: 'openai-completions', baseURL: 'https://x/v1', models: [{ id: 'x' }] } } })); return; }
+    await realEdit(entry, change);
+  };
+  const out = await restoreOriginal({ editor, entry: editor.entry, store });
+  assert.equal(out.ok, false);
+  assert.equal(out.code, 'READBACK_MISMATCH');
+  assert.ok(JSON.parse(beforeRestore).providers['laiyifen-responses'], '恢复失败后回到恢复前状态');
 });
 
 // ----------------------------------------------------------------- 汇总

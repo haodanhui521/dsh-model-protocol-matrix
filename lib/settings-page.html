@@ -47,6 +47,7 @@ function render(){
   parts.push('<button id="probeAll"' + (S.busy ? ' disabled' : '') + '>探测全部模型</button>');
   parts.push('<button id="export">导出 YAML</button>');
   if (inv.backups.length) parts.push('<button class="danger" id="restore">回滚到最近备份</button>');
+  parts.push('<button class="danger" id="restoreOrig" title="恢复到插件接管前的路由结构，并清空托管状态。卸载插件前请先点这个">恢复原始结构（卸载前使用）</button>');
   if (S.busy) parts.push('<span class="muted">' + esc(S.busy) + '</span>');
   if (S.busy) parts.push('<button id="stopProbe" class="danger">停止</button>');
   parts.push('</div>');
@@ -89,6 +90,7 @@ function bind(){
   const pa = $('#probeAll'); if (pa) pa.addEventListener('click', probeAll);
   const ex = $('#export'); if (ex) ex.addEventListener('click', exportYaml);
   const rs = $('#restore'); if (rs) rs.addEventListener('click', restoreBackup);
+  const ro = $('#restoreOrig'); if (ro) ro.addEventListener('click', restoreOriginal);
   const sp = $('#stopProbe'); if (sp) sp.addEventListener('click', () => { S.stop = true; flash('将在当前协议结束后停止'); });
 }
 async function load(){ const res = await api('/inventory'); S.inv = res; render(); }
@@ -137,6 +139,13 @@ async function applyAll(){
   if (!out.ok) { flash('应用失败：' + (out.code || '') + ' ' + (out.error || '')); S.lastDiff = out; render(); return; }
   S.pending = {}; S.lastDiff = out.changed ? out : null; await load();
   flash(out.changed ? '已写入配置（备份：' + ((out.backup && out.backup.snapshot) || '') + '）' : '无变更，未写入');
+}
+async function restoreOriginal(){
+  if (!confirm('恢复到插件接管前的路由结构？\n\n· 删除插件派生的路由（如 laiyifen-responses）\n· 被迁移的模型回到原路由\n· 之后你手动改过的 provider 配置也会被回退（会先自动备份）\n\n卸载插件前请先执行这一步。')) return;
+  S.busy = '恢复原始结构 …'; render();
+  const out = await api('/restore-original', {});
+  S.busy = ''; S.pending = {}; await load();
+  flash(out.ok ? '已恢复原始结构（备份：' + ((out.backup && out.backup.snapshot) || '') + '）。现在可以安全停用/卸载插件。' : ('恢复失败：' + (out.code || '') + ' ' + (out.error || '')));
 }
 async function toggleHidden(key, hidden){
   const slash = key.indexOf('/');

@@ -1,6 +1,6 @@
 {
   "name": "dsh-model-protocol-matrix",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Per-model wire protocol for DeepSeek Harness: compile model-level protocol intent into legal llm-pi-ai routes, probe all three protocols, hide unusable models. Mutually exclusive with dsh-gearbox.",
   "type": "module",
   "main": "lib/index.js",
