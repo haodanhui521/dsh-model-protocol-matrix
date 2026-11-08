@@ -12,20 +12,20 @@
 `api` 在 `llm-pi-ai` 里是**提供商路由级**字段（`providers[].api`），`models[]` 条目没有
 `api`。所以“每个模型一个协议”只能通过拆分路由实现：
 
-```yaml
 providers:
-  laiyifen:                       # glm 系列走 Chat Completions
-    apiKeyEnv: LAIYIFEN_API_KEY
+  my-gateway:                      # 主协议：A 系列模型走 Chat Completions
+    displayName: 我的网关
+    apiKeyEnv: MY_GATEWAY_API_KEY
     api: openai-completions
-    baseURL: https://ai-model.laiyifen.com/v1
-    models: [{ id: glm-5.3-flash, ... }]
+    baseURL: https://gateway.example.com/v1
+    models: [{ id: model-a-flash, ... }]
 
-  laiyifen-responses:             # ds-4.1 走 Responses（插件自动派生）
-    displayName: 来伊份大模型 · responses
-    apiKeyEnv: LAIYIFEN_API_KEY
+  my-gateway-responses:            # 派生路由：B 系列模型走 Responses（插件自动生成）
+    displayName: 我的网关 · responses
+    apiKeyEnv: MY_GATEWAY_API_KEY
     api: openai-responses
-    baseURL: https://ai-model.laiyifen.com/v1
-    models: [{ id: deepseek-v4.1-flash, ... }]
+    baseURL: https://gateway.example.com/v1
+    models: [{ id: model-b-pro, ... }]
 ```
 
 本插件把这件事自动化、可预览、可回滚，并在拆分时处理两条硬约束：
@@ -102,21 +102,19 @@ gearbox 用“写入前 preview + deepEqual 短路”压住这个循环；本插
 
 patch 里只留静态设置（`enabled`、`probe.timeoutMs` 等）。
 
-## 实测记录（laiyifen 网关，2026-11-07）
+## 实测记录（自建网关，2026-11-07）
 
 \`\`\`
-glm-5.3-flash        @ chat        model ok · reasoning supported（非法 effort 被拒：[low, high, max]）
-                                   thinkingFormat=openai · image supported（8x8；1x1 被拒加载）
-glm-5.3-flash        @ responses   model-missing 400：The model does not support v1/responses
-deepseek-v4.1-flash  @ responses   model ok · reasoning supported（非法 effort 被拒：
-                                   The request parameter reasoning.effort is invalid or missing）
-                                   image supported
-两者 @ /v1/models      31 个模型，但只返回 id/object/created/owned_by/supported_endpoint_types
-                       —— 没有容量字段，contextWindow / maxTokens 需手动填
+model-a-flash   @ responses  model-missing 400：The model does not support v1/responses
+model-a-flash   @ chat       reasoning supported（非法 effort 被拒：[low, high, max]）
+                             thinkingFormat=openai · image supported（8x8；1x1 被拒加载）
+model-b-pro     @ responses  reasoning supported（非法 effort 被拒）；image supported
+两模型 @ /v1/models          列表只有 id/object/created/owned_by —— 没有容量字段，
+                             contextWindow / maxTokens 需手动填
 \`\`\`
 
-结论：\`glm-5.3-flash\` 留在 \`laiyifen\`（chat），\`deepseek-v4.1-flash\` 拆到
-\`laiyifen-responses\`（responses）——正是本插件要自动完成的拆分。
+结论：\`model-a-flash\` 留在 chat 路由，\`model-b-pro\` 拆到 responses 派生路由——
+正是本插件要自动完成的拆分。
 
 ## 边界与冲突
 
