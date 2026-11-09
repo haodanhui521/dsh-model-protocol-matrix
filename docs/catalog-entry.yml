@@ -1,15 +1,9 @@
-# 提交到 awesome-dsh-plugin 的条目文件（最终版）
-# 提交方式：在 https://github.com/awesome-dsh-plugin/awesome-dsh-plugin 网页上
-#   Add file → Create new file，路径填：
-#   data/plugins/haodanhui521__dsh-model-protocol-matrix.yml
-# 粘贴下方 --- 之后的全部内容，Commit → New pull request。
-#
-# 规则（contributing.md）：description.en 必填；含 ": " 必须加引号；
-# url 必须与仓库完全一致；category 用 model；仓库需创建满 1 天。
+# 提交到 awesome-dsh-plugin 的条目文件（已提交 PR）
+# PR: https://github.com/awesome-dsh-plugin/awesome-dsh-plugin/compare/main...haodanhui521:awesome-dsh-plugin:add/protocol-matrix
 url: https://github.com/haodanhui521/dsh-model-protocol-matrix
 name: haodanhui521/dsh-model-protocol-matrix
 category: model
 description:
-  en: 'Per-model wire protocol for DeepSeek Harness: compiles model-level protocol intent into legal llm-pi-ai provider routes, probes all three wire protocols with a differential control probe, and hides models no protocol can serve. Mutually exclusive with dsh-gearbox.'
-  zh: '让 DSH 的每个模型单独选择请求协议：把模型级协议意图编译成合法的 llm-pi-ai 路由，用对照探针实测 Chat Completions、Responses、Anthropic 三种协议，并把任何协议都不可用的模型从选择器隐藏。与 dsh-gearbox 二选一。'
+  en: Per-model wire protocol for DeepSeek Harness: compiles model-level protocol intent into legal llm-pi-ai provider routes, probes Chat Completions, Responses and Anthropic Messages with a differential control probe, and hides models no protocol can serve. Mutually exclusive with dsh-gearbox.
+  zh: 让 DSH 的每个模型单独选择请求协议：把模型级协议意图编译成合法的 llm-pi-ai 路由，用对照探针实测 Chat Completions、Responses、Anthropic Messages 三种协议，并把任何协议都不可用的模型从选择器隐藏。与 dsh-gearbox 二选一。
 icon: https://raw.githubusercontent.com/haodanhui521/dsh-model-protocol-matrix/master/assets/icon-180.png
